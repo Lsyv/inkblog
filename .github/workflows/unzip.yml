@@ -8,18 +8,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Unzip file
+      - name: Check files
+        run: |
+          ls -lah
+
+      - name: Test zip
+        run: |
+          unzip -t moji-v1.26.6.9.zip
+
+      - name: Extract
         run: |
           unzip -o moji-v1.26.6.9.zip -d .
           rm moji-v1.26.6.9.zip
 
-      - name: Commit changes
+      - name: Commit
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add .
-          git commit -m "Extract zip and remove archive" || echo "No changes"
+          git commit -m "Extract moji zip" || exit 0
           git push
